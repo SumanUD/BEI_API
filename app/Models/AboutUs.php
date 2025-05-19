@@ -7,18 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class AboutUs extends Model
 {
     protected $fillable = [
-    'banner_video',
-    'about_image',
-    'about_bg_image',
-    'team_members',
-    'email',
-    'linkedin',
-    'about_gallery',
-];
+        'desktop_video', 'mobile_video', 'description', 'right_image', 'team_members',
+    ];
 
-protected $casts = [
-    'team_members' => 'array',
-    'about_gallery' => 'array',
-];
+    protected $casts = [
+        'team_members' => 'array',
+    ];
 
 }

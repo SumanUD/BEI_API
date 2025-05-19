@@ -13,11 +13,14 @@ public function up()
 {
     Schema::create('brands', function (Blueprint $table) {
         $table->id();
-        $table->json('banner_images')->nullable();  // Store multiple banner images
-        $table->string('youtube_link')->nullable();
+        $table->text('brand_name')->nullable();
+        $table->text('brand_logo')->nullable();
         $table->text('below_video_text')->nullable();
-        $table->json('image_gallery')->nullable();  // Store array of image paths
-        $table->json('video_gallery')->nullable();  // Store array of video URLs
+        $table->json('banner_images')->nullable();
+        $table->json('youtube_link')->nullable();
+        $table->json('image_gallery')->nullable();
+        $table->json('video_gallery')->nullable();
+        
         $table->timestamps();
     });
 }

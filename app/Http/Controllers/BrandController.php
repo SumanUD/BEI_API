@@ -2,31 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BrandController extends Controller
 {
-    public function create()
-    {
-        return view('brands.create');
-    }
-
     public function index()
     {
         $brands = Brand::latest()->get();
         return view('brands.index', compact('brands'));
     }
 
+    public function create()
+    {
+        return view('brands.create');
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'banner_images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
-            'youtube_link' => 'nullable|url',
-            'below_video_text' => 'nullable|string|max:1000',
-            'image_gallery.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
-            'video_gallery.*' => 'url|nullable',
+            'brand_name' => 'string',
+            'brand_logo' => 'image|mimes:jpeg,png,jpg,webp',
+            'banner_images.*' => 'image|mimes:jpeg,png,jpg,webp',
+            'youtube_link' => 'nullable|array',
+            'youtube_link.*' => 'nullable|url',
+            'below_video_text' => 'nullable|string|max:6000',
+            'image_gallery.*' => 'image|mimes:jpeg,png,jpg,webp',
+            'video_gallery' => 'nullable|array',
+            'video_gallery.*' => 'nullable|url',
         ]);
 
         $bannerImages = [];
@@ -44,55 +48,87 @@ class BrandController extends Controller
         }
 
         Brand::create([
+            'brand_name' => $validated['brand_name'],
+            'brand_logo' => $validated['brand_logo'],
             'banner_images' => $bannerImages,
-            'youtube_link' => $validated['youtube_link'],
-            'below_video_text' => $validated['below_video_text'],
+            'youtube_link' => $validated['youtube_link'] ?? [],
+            'below_video_text' => $validated['below_video_text'] ?? '',
             'image_gallery' => $imageGallery,
-            'video_gallery' => $request->video_gallery, // already array of URLs
+            'video_gallery' => $validated['video_gallery'] ?? [],
         ]);
 
         return redirect()->route('brands.index')->with('success', 'Brand created successfully!');
     }
 
     public function edit(Brand $brand)
-{
-    return view('brands.edit', compact('brand'));
-}
-
-public function update(Request $request, Brand $brand)
-{
-    $validated = $request->validate([
-        'youtube_link' => 'nullable|url',
-        'below_video_text' => 'nullable|string',
-        'banner_images.*' => 'nullable|image|mimes:jpg,jpeg,png',
-        'image_gallery.*' => 'nullable|image|mimes:jpg,jpeg,png',
-        'video_gallery.*' => 'nullable|url',
-    ]);
-
-    // Handle file uploads if new files are uploaded
-    if ($request->hasFile('banner_images')) {
-        $bannerPaths = [];
-        foreach ($request->file('banner_images') as $file) {
-            $bannerPaths[] = $file->store('brands/banner_images', 'public');
-        }
-        $brand->banner_images = $bannerPaths;
+    {
+        return view('brands.edit', compact('brand'));
     }
 
-    if ($request->hasFile('image_gallery')) {
-        $imageGalleryPaths = [];
-        foreach ($request->file('image_gallery') as $file) {
-            $imageGalleryPaths[] = $file->store('brands/image_gallery', 'public');
+    public function update(Request $request, Brand $brand)
+    {
+        $validated = $request->validate([
+            'brand_name' => 'string',
+            'banner_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp',
+            'youtube_link' => 'nullable|array',
+            'youtube_link.*' => 'nullable|url',
+            'below_video_text' => 'nullable|string|max:6000',
+            'image_gallery.*' => 'nullable|image|mimes:jpeg,png,jpg,webp',
+            'video_gallery' => 'nullable|array',
+            'video_gallery.*' => 'nullable|url',
+        ]);
+
+        if ($request->hasFile('banner_images')) {
+            $bannerPaths = [];
+            foreach ($request->file('banner_images') as $file) {
+                $bannerPaths[] = $file->store('brands/banners', 'public');
+            }
+            $brand->banner_images = $bannerPaths;
         }
-        $brand->image_gallery = $imageGalleryPaths;
+
+        if ($request->hasFile('image_gallery')) {
+            $imageGalleryPaths = [];
+            foreach ($request->file('image_gallery') as $file) {
+                $imageGalleryPaths[] = $file->store('brands/gallery', 'public');
+            }
+            $brand->image_gallery = $imageGalleryPaths;
+        }
+
+        $brand->youtube_link = $validated['youtube_link'] ?? [];
+        $brand->below_video_text = $validated['below_video_text'] ?? '';
+        $brand->video_gallery = $validated['video_gallery'] ?? [];
+        $brand->brand_name = $validated['brand_name'] ?? '';
+
+        $brand->save();
+
+        return redirect()->route('brands.index')->with('success', 'Brand updated successfully!');
     }
 
-    $brand->youtube_link = $validated['youtube_link'];
-    $brand->below_video_text = $validated['below_video_text'];
-    $brand->video_gallery = $request->video_gallery ?? [];
 
-    $brand->save();
+    public function jsonIndex()
+    {
+        $brands = Brand::latest()->get()->map(function ($brand) {
 
-    return redirect()->route('brands.index')->with('success', 'Brand updated successfully!');
-}
+            $brand->brand_logo = $brand->brand_logo ? url(Storage::url($brand->brand_logo)) : null;
+    
+
+            $brand->banner_images = collect($brand->banner_images)->map(function ($image) {
+                return url(Storage::url($image));
+            });
+    
+
+            $brand->image_gallery = collect($brand->image_gallery)->map(function ($image) {
+                return url(Storage::url($image));
+            });
+    
+            return $brand;
+        });
+    
+        return response()->json([
+            'status' => 'success',
+            'data' => $brands
+        ]);
+    }
+    
 
 }

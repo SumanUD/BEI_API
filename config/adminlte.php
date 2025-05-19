@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'BEI Admin Panel',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,9 +63,9 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-    'logo_img_class' => 'brand-image img-circle elevation-3',
+    'logo' => 'BEI Admin Panel',
+    'logo_img' => 'vendor/adminlte/dist/img/BEI_Logo.png',
+    'logo_img_class' => 'brand-image elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'Admin Logo',
@@ -86,11 +86,11 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/BEI_Logo.png',
             'alt' => 'Auth Logo',
             'class' => '',
-            'width' => 50,
-            'height' => 50,
+            'width' => 200,
+            'height' => 200,
         ],
     ],
 
@@ -113,11 +113,11 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-            'alt' => 'AdminLTE Preloader Image',
+            'path' => 'vendor/adminlte/dist/img/BEI_logo.gif',
+            'alt' => 'BEI Preloader Image',
             'effect' => 'animation__shake',
-            'width' => 60,
-            'height' => 60,
+            'width' => 200,
+            'height' => 200,
         ],
     ],
 
@@ -135,7 +135,7 @@ return [
 
     'usermenu_enabled' => true,
     'usermenu_header' => false,
-    'usermenu_header_class' => 'bg-primary',
+    'usermenu_header_class' => 'bg-warning',
     'usermenu_image' => false,
     'usermenu_desc' => false,
     'usermenu_profile_url' => false,
@@ -196,7 +196,7 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
+    'classes_sidebar' => 'sidebar-light-warning elevation-4',
     'classes_sidebar_nav' => '',
     'classes_topnav' => 'navbar-white navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
@@ -300,46 +300,6 @@ return [
 
 'menu' => [
 
-    // Example existing menu
-    [
-        'text' => 'multilevel',
-        'icon' => 'fas fa-fw fa-share',
-        'submenu' => [
-            [
-                'text' => 'level_one',
-                'url' => '#',
-            ],
-            [
-                'text' => 'level_one',
-                'url' => '#',
-                'submenu' => [
-                    [
-                        'text' => 'level_two',
-                        'url' => '#',
-                    ],
-                    [
-                        'text' => 'level_two',
-                        'url' => '#',
-                        'submenu' => [
-                            [
-                                'text' => 'level_three',
-                                'url' => '#',
-                            ],
-                            [
-                                'text' => 'level_three',
-                                'url' => '#',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            [
-                'text' => 'level_one',
-                'url' => '#',
-            ],
-        ],
-    ],
-
 
     [
         'text'    => 'Brands',
@@ -358,7 +318,24 @@ return [
         ],
     ],
 
+    [
+        'text' => 'Home Page CMS',
+        'url'  => 'home-page',
+        'icon' => 'fas fa-home',
+    ],
 
+    [
+        'text' => 'About Us',
+        'url'  => 'about-us',
+        'icon' => 'fas fa-users',
+    ],
+    
+    [
+        'text' => 'Services Page',
+        'url'  => 'services',
+        'icon' => 'fas fa-cogs',
+    ],
+    
 
 
 

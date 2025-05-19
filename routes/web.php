@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\ServicePageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,10 +29,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/brands/{brand}/edit', [BrandController::class, 'edit'])->name('brands.edit');
     Route::put('/brands/{brand}', [BrandController::class, 'update'])->name('brands.update');
 
-    // About Us
-    Route::get('/about', [AboutUsController::class, 'index'])->name('about.index');
-    Route::get('/about/create', [AboutUsController::class, 'create'])->name('about.create');
-    Route::post('/about', [AboutUsController::class, 'store'])->name('about.store');
-    Route::get('/about/{about}/edit', [AboutUsController::class, 'edit'])->name('about.edit');
-    Route::put('/about/{about}', [AboutUsController::class, 'update'])->name('about.update');
+    // About Us CMS
+    Route::get('/about-us', [AboutUsController::class, 'index'])->name('about.index');
+    Route::post('/about-us', [AboutUsController::class, 'storeOrUpdate'])->name('about.save');
+    Route::get('/team-member-template', [AboutUsController::class, 'teamMemberTemplate'])->name('admin.team-member-template');
+
+
+    // Home Page CMS
+    Route::get('/home-page', [HomePageController::class, 'form'])->name('homepag.form');
+    Route::post('/home-page/save', [HomePageController::class, 'save'])->name('homepag.save');
+
+    Route::get('/services', [ServicePageController::class, 'index'])->name('services.index');
+    Route::post('/services', [ServicePageController::class, 'storeOrUpdate'])->name('services.storeOrUpdate');
+    
+
 });
