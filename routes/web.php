@@ -6,6 +6,7 @@ use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\ServicePageController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ContactMessageController;
 
 
 /*
@@ -40,9 +41,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home-page', [HomePageController::class, 'form'])->name('homepag.form');
     Route::post('/home-page/save', [HomePageController::class, 'save'])->name('homepag.save');
 
+    // Services
     Route::get('/services', [ServicePageController::class, 'index'])->name('services.index');
     Route::post('/services', [ServicePageController::class, 'storeOrUpdate'])->name('services.storeOrUpdate');
 
     // News 
     Route::resource('news', NewsController::class);
+
+    // Contact
+    Route::get('/admin/contact-messages', [ContactMessageController::class, 'index'])->name('admin.contact.index');
+    Route::get('/admin/contact-messages/data', [ContactMessageController::class, 'getData'])->name('admin.contact.data');
+    Route::get('/admin/contact-messages/{id}', [ContactMessageController::class, 'show'])->name('admin.contact.show');
+    Route::delete('/admin/contact-messages/{id}', [ContactMessageController::class, 'destroy'])->name('admin.contact.destroy');
+
 });

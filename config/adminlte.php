@@ -298,52 +298,58 @@ return [
     |
     */
 
-'menu' => [
+    'menu' => [
 
 
-    [
-        'text'    => 'Brands',
-        'icon'    => 'fas fa-tags',
-        'submenu' => [
-            [
-                'text' => 'Create',
-                'url'  => 'brands/create',
-                'icon' => 'fas fa-plus',
-            ],
-            [
-                'text' => 'Show',
-                'url'  => 'brands/index',
-                'icon' => 'fas fa-eye',
+        [
+            'text' => 'Brands',
+            'icon' => 'fas fa-tags',
+            'submenu' => [
+                [
+                    'text' => 'Create',
+                    'url' => 'brands/create',
+                    'icon' => 'fas fa-plus',
+                ],
+                [
+                    'text' => 'Show',
+                    'url' => 'brands/index',
+                    'icon' => 'fas fa-eye',
+                ],
             ],
         ],
-    ],
 
-    [
-        'text' => 'Home Page CMS',
-        'url'  => 'home-page',
-        'icon' => 'fas fa-home',
-    ],
+        [
+            'text' => 'Home Page CMS',
+            'url' => 'home-page',
+            'icon' => 'fas fa-home',
+        ],
 
-    [
-        'text' => 'About Us',
-        'url'  => 'about-us',
-        'icon' => 'fas fa-users',
-    ],
-    
-    [
-        'text' => 'Services Page',
-        'url'  => 'services',
-        'icon' => 'fas fa-cogs',
-    ],
-    
-    [
-        'text' => 'News',
-        'url'  => 'news',
-        'icon' => 'fas fa-book',
-    ],
+        [
+            'text' => 'About Us',
+            'url' => 'about-us',
+            'icon' => 'fas fa-users',
+        ],
+
+        [
+            'text' => 'Services Page',
+            'url' => 'services',
+            'icon' => 'fas fa-cogs',
+        ],
+
+        [
+            'text' => 'News',
+            'url' => 'news',
+            'icon' => 'fas fa-book',
+        ],
+
+        [
+            'text' => 'Contact',
+            'url' => 'admin/contact-messages',
+            'icon' => 'fas fa-phone',
+        ],
 
 
-],
+    ],
 
 
     /*
