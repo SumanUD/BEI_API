@@ -20,7 +20,8 @@ public function up()
         $table->json('youtube_link')->nullable();
         $table->json('image_gallery')->nullable();
         $table->json('video_gallery')->nullable();
-        
+        $table->json('video_gallery_video')->nullable();
+
         $table->timestamps();
     });
 }

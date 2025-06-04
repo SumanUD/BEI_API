@@ -5,6 +5,8 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\ServicePageController;
+use App\Http\Controllers\NewsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,13 +36,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/about-us', [AboutUsController::class, 'storeOrUpdate'])->name('about.save');
     Route::get('/team-member-template', [AboutUsController::class, 'teamMemberTemplate'])->name('admin.team-member-template');
 
-
     // Home Page CMS
     Route::get('/home-page', [HomePageController::class, 'form'])->name('homepag.form');
     Route::post('/home-page/save', [HomePageController::class, 'save'])->name('homepag.save');
 
     Route::get('/services', [ServicePageController::class, 'index'])->name('services.index');
     Route::post('/services', [ServicePageController::class, 'storeOrUpdate'])->name('services.storeOrUpdate');
-    
 
+    // News 
+    Route::resource('news', NewsController::class);
 });

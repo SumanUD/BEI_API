@@ -336,7 +336,11 @@ return [
         'icon' => 'fas fa-cogs',
     ],
     
-
+    [
+        'text' => 'News',
+        'url'  => 'news',
+        'icon' => 'fas fa-book',
+    ],
 
 
 ],

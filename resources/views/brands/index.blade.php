@@ -11,16 +11,13 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table id="brandsTable" class="table table-bordered table-striped">
-        <thead>
+    <table id="brandsTable" class="table table-bordered table-striped align-middle text-center">
+        <thead class="table-dark">
             <tr>
-                <th>ID</th>
+                <th>Brand Order</th>
                 <th>Brand Name</th>
-                <th>YouTube Links</th>
-                <th>Below Video Text</th>
-                <th>Image Gallery</th>
-                <th>Video Gallery</th>
-                <th>Created At</th>
+                <th>Brand Logo</th>
+                <th>Banner Image</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -28,37 +25,20 @@
             @foreach ($brands as $brand)
                 <tr>
                     <td>{{ $brand->id }}</td>
+                    <td class="fw-bold">{{ $brand->brand_name }}</td>
                     <td>
-     
-                            {{ $brand->brand_name }}
+                        @if($brand->brand_logo)
+                            <img src="{{ asset('storage/' . $brand->brand_logo) }}" alt="Logo" width="60" class="img-thumbnail">
+                        @endif
+                    </td>
+                    <td>
+                       @if($brand->banner_images && is_array(json_decode($brand->banner_images)))
+                            @foreach(json_decode($brand->banner_images) as $image)
+                                <img src="{{ asset('storage/' . $image) }}" alt="Banner" width="100" class="img-fluid rounded shadow-sm me-1 mb-1">
+                            @endforeach
+                        @endif
 
                     </td>
-                    <td>
-                        @if(is_array($brand->youtube_link))
-                            @foreach ($brand->youtube_link as $link)
-                                <a href="{{ $link }}" target="_blank">YouTube</a><br>
-                            @endforeach
-                        @elseif(!empty($brand->youtube_link))
-                            {{-- In case youtube_link is a single string --}}
-                            <a href="{{ $brand->youtube_link }}" target="_blank">YouTube</a>
-                        @endif
-                    </td>
-                    <td>{{ Str::limit(strip_tags($brand->below_video_text), 50) }}</td>
-                    <td>
-                        @if(is_array($brand->image_gallery))
-                            @foreach ($brand->image_gallery as $img)
-                                <img src="{{ asset('storage/' . $img) }}" alt="Gallery" width="60" class="me-1 mb-1">
-                            @endforeach
-                        @endif
-                    </td>
-                    <td>
-                        @if(is_array($brand->video_gallery))
-                            @foreach ($brand->video_gallery as $link)
-                                <a href="{{ $link }}" target="_blank">Video</a><br>
-                            @endforeach
-                        @endif
-                    </td>
-                    <td>{{ $brand->created_at->format('Y-m-d') }}</td>
                     <td>
                         <a href="{{ route('brands.edit', $brand->id) }}" class="btn btn-sm btn-primary">Edit</a>
                     </td>
@@ -69,12 +49,15 @@
 @endsection
 
 @section('css')
-    <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <style>
+        table img {
+            object-fit: cover;
+        }
+    </style>
 @endsection
 
 @section('js')
-    <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script>
