@@ -17,7 +17,9 @@
             'packaging' => 'Packaging',
             'social_media' => 'Social Media',
             'digital_media' => 'Digital Media',
-            'seo_website_ecommerce' => 'SEO / Website / E-Commerce'
+            'seo_website_ecommerce' => 'SEO / Website / E-Commerce',
+            'mainline_media' => 'Mainmedia Media'
+
         ] as $field => $label)
             <div class="mb-3">
                 <label>{{ $label }}</label>

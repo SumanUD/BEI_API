@@ -35,12 +35,13 @@ class ContactMessageController extends Controller
     {
         // Validate the request
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'organisation_name' => 'nullable|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone_number' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'phone_number' => 'nullable|digits:10',
             'website_or_social_link' => 'nullable|url|max:255',
         ]);
+
 
         // Return errors if validation fails
         if ($validator->fails()) {

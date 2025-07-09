@@ -21,6 +21,8 @@ class ServicePageController extends Controller
             'social_media' => 'nullable|string',
             'digital_media' => 'nullable|string',
             'seo_website_ecommerce' => 'nullable|string',
+            'mainline_media' => 'nullable|string',
+
         ]);
     
         $service = ServicePage::first() ?? new ServicePage();
@@ -31,6 +33,8 @@ class ServicePageController extends Controller
         $service->social_media = $request->social_media;
         $service->digital_media = $request->digital_media;
         $service->seo_website_ecommerce = $request->seo_website_ecommerce;
+        $service->mainline_media = $request->mainline_media;
+
         
         $service->save();
     
@@ -56,10 +60,11 @@ class ServicePageController extends Controller
                 'social_media' => $service->social_media,
                 'digital_media' => $service->digital_media,
                 'seo_website_ecommerce' => $service->seo_website_ecommerce,
+                'mainline_media' => $service->mainline_media,
+
             ]
         ];
     
-        // Use this trick: return the JSON as a string with header and disable JSON escaping by encoding yourself
         return response(
             json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
             200,

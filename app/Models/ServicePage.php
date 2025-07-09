@@ -13,5 +13,6 @@ class ServicePage extends Model
         'social_media',
         'digital_media',
         'seo_website_ecommerce',
+        'mainline_media',
     ];
 }

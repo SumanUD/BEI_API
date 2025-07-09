@@ -19,6 +19,8 @@ return new class extends Migration
             $table->longText('social_media')->nullable();
             $table->longText('digital_media')->nullable();
             $table->longText('seo_website_ecommerce')->nullable();
+            $table->longText('mainline_media')->nullable();
+
             $table->timestamps();
         });
     }
