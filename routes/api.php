@@ -9,6 +9,7 @@ use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\ServicePageController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ContactMessageController;
+use App\Http\Controllers\WebsiteLoaderController;
 
 
 Route::get('news', [NewsController::class, 'allNews']);
@@ -17,3 +18,5 @@ Route::get('/homecms', [HomePageController::class, 'jsonHomePage']);
 Route::get('/aboutcms', [AboutUsController::class, 'jsonAboutUs']);
 Route::get('/servicescms', [ServicePageController::class, 'jsonServicePage']);
 Route::post('/contact', [ContactMessageController::class, 'store']);
+Route::get('/website-loader', [WebsiteLoaderController::class, 'apiLoader']);
+

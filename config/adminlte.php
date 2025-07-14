@@ -349,6 +349,13 @@ return [
         ],
 
 
+        [
+            'text' => 'Website Loader',
+            'url' => 'admin/website-loader',
+            'icon' => 'fas fa-spinner',
+        ],
+
+
     ],
 
 

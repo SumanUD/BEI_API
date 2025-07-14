@@ -7,7 +7,7 @@ use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\ServicePageController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ContactMessageController;
-
+use App\Http\Controllers\WebsiteLoaderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,5 +53,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/contact-messages/data', [ContactMessageController::class, 'getData'])->name('admin.contact.data');
     Route::get('/admin/contact-messages/{id}', [ContactMessageController::class, 'show'])->name('admin.contact.show');
     Route::delete('/admin/contact-messages/{id}', [ContactMessageController::class, 'destroy'])->name('admin.contact.destroy');
+
+
+    Route::get('/admin/website-loader', [WebsiteLoaderController::class, 'edit'])->name('website-loader.edit');
+    Route::post('/admin/website-loader', [WebsiteLoaderController::class, 'update'])->name('website-loader.update');
 
 });
