@@ -3,7 +3,7 @@
 @section('title', 'Home Page Videos')
 
 @section('content_header')
-    <h1>Home Page - Upload Videos</h1>
+    <h1>Home Page - Video URLs</h1>
 @endsection
 
 @section('content')
@@ -11,22 +11,32 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <form action="{{ route('homepag.save') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('homepag.save') }}" method="POST">
         @csrf
 
         <div class="mb-3">
-            <label for="desktop_full_video" class="form-label">Desktop Full Video</label>
-            <input type="file" class="form-control" name="desktop_full_video">
-            @if ($home && $home->desktop_full_video)
-                <video src="{{ asset('storage/' . $home->desktop_full_video) }}" controls width="300" class="mt-2"></video>
+            <label for="desktop_full_video" class="form-label">Desktop Full Video URL</label>
+            <input type="text" class="form-control" name="desktop_full_video"
+                value="{{ old('desktop_full_video', $home->desktop_full_video ?? '') }}">
+            @error('desktop_full_video')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+
+            @if (!empty($home->desktop_full_video))
+                <video src="{{ $home->desktop_full_video }}" controls width="300" class="mt-2"></video>
             @endif
         </div>
 
         <div class="mb-3">
-            <label for="mobile_full_video" class="form-label">Mobile Full Video</label>
-            <input type="file" class="form-control" name="mobile_full_video">
-            @if ($home && $home->mobile_full_video)
-                <video src="{{ asset('storage/' . $home->mobile_full_video) }}" controls width="300" class="mt-2"></video>
+            <label for="mobile_full_video" class="form-label">Mobile Full Video URL</label>
+            <input type="text" class="form-control" name="mobile_full_video"
+                value="{{ old('mobile_full_video', $home->mobile_full_video ?? '') }}">
+            @error('mobile_full_video')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+
+            @if (!empty($home->mobile_full_video))
+                <video src="{{ $home->mobile_full_video }}" controls width="300" class="mt-2"></video>
             @endif
         </div>
 

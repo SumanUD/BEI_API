@@ -14,21 +14,21 @@
     <form action="{{ route('about.save') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
-        <!-- Desktop Video -->
+        <!-- Desktop Video (as string) -->
         <div class="mb-3">
-            <label>Desktop Video</label>
-            <input type="file" name="desktop_video" class="form-control">
+            <label>Desktop Video (URL or path)</label>
+            <input type="text" name="desktop_video" class="form-control" value="{{ old('desktop_video', $about?->desktop_video) }}">
             @if($about?->desktop_video)
-                <video src="{{ asset('storage/' . $about->desktop_video) }}" controls width="200"></video>
+                <video src="{{ $about->desktop_video }}" controls width="200" class="mt-2"></video>
             @endif
         </div>
 
-        <!-- Mobile Video -->
+        <!-- Mobile Video (as string) -->
         <div class="mb-3">
-            <label>Mobile Video</label>
-            <input type="file" name="mobile_video" class="form-control">
+            <label>Mobile Video (URL or path)</label>
+            <input type="text" name="mobile_video" class="form-control" value="{{ old('mobile_video', $about?->mobile_video) }}">
             @if($about?->mobile_video)
-                <video src="{{ asset('storage/' . $about->mobile_video) }}" controls width="200"></video>
+                <video src="{{ $about->mobile_video }}" controls width="200" class="mt-2"></video>
             @endif
         </div>
 
@@ -43,7 +43,7 @@
             <label>Right Image</label>
             <input type="file" name="right_image" class="form-control">
             @if($about?->right_image)
-                <img src="{{ asset('storage/' . $about->right_image) }}" width="120">
+                <img src="{{ asset('storage/' . $about->right_image) }}" width="120" class="mt-2">
             @endif
         </div>
 
@@ -75,14 +75,12 @@
         fetch(`/team-member-template?index=${memberIndex}`)
             .then(response => response.text())
             .then(html => {
-                const container = document.getElementById('teamMembersContainer');
-                container.insertAdjacentHTML('beforeend', html);
+                document.getElementById('teamMembersContainer').insertAdjacentHTML('beforeend', html);
                 memberIndex++;
             })
             .catch(error => {
                 console.error("Error loading team member block:", error);
             });
     }
-
 </script>
 @endsection

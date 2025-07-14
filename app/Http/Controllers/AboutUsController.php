@@ -21,67 +21,63 @@ class AboutUsController extends Controller
     }
 
 
-    public function storeOrUpdate(Request $request)
-    {
-        $validated = $request->validate([
-            'desktop_video' => 'nullable|mimes:mp4|max:51200',
-            'mobile_video' => 'nullable|mimes:mp4|max:51200',
-            'description' => 'nullable|string',
-            'right_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'team_members.*.photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'team_members.*.description' => 'nullable|string',
-            'team_members.*.email' => 'nullable|email',
-            'team_members.*.linkedin' => 'nullable|url',
-            'team_members.*.website' => 'nullable|url',
-            'team_members.*.old_photo' => 'nullable|string',
-        ]);
-    
-        $about = AboutUs::first() ?? new AboutUs();
-    
-        if ($request->hasFile('desktop_video')) {
-            $about->desktop_video = $request->file('desktop_video')->store('aboutus/videos', 'public');
-        }
-    
-        if ($request->hasFile('mobile_video')) {
-            $about->mobile_video = $request->file('mobile_video')->store('aboutus/videos', 'public');
-        }
-    
-        if ($request->hasFile('right_image')) {
-            $about->right_image = $request->file('right_image')->store('aboutus/images', 'public');
-        }
-    
-        $about->description = $request->description;
-    
-        $team_members = [];
-        if ($request->has('team_members')) {
-            foreach ($request->team_members as $index => $memberData) {
-                $photoPath = null;
-    
-                // Handle new photo upload
-                if (isset($memberData['photo']) && $memberData['photo'] instanceof \Illuminate\Http\UploadedFile) {
-                    $photoPath = $memberData['photo']->store('aboutus/team', 'public');
-                }
-                // If no new photo, use the old one
-                elseif (!empty($memberData['old_photo'])) {
-                    $photoPath = $memberData['old_photo'];
-                }
-    
-                $team_members[] = [
-                    'name' => $memberData['name'] ?? '',
-                    'photo' => $photoPath,
-                    'description' => $memberData['description'] ?? '',
-                    'email' => $memberData['email'] ?? '',
-                    'linkedin' => $memberData['linkedin'] ?? '',
-                    'website' => $memberData['website'] ?? '',
-                ];
-            }
-        }
-    
-        $about->team_members = $team_members;
-        $about->save();
-    
-        return back()->with('success', 'About Us page updated successfully.');
+public function storeOrUpdate(Request $request)
+{
+    $validated = $request->validate([
+        'desktop_video' => 'required|string|max:255',
+        'mobile_video' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'right_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        'team_members.*.photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        'team_members.*.description' => 'nullable|string',
+        'team_members.*.email' => 'nullable|email',
+        'team_members.*.linkedin' => 'nullable|url',
+        'team_members.*.website' => 'nullable|url',
+        'team_members.*.old_photo' => 'nullable|string',
+    ]);
+
+    $about = AboutUs::first() ?? new AboutUs();
+
+    // These are just string values (URLs or paths), no file upload handling needed
+    $about->desktop_video = $validated['desktop_video'];
+    $about->mobile_video = $validated['mobile_video'];
+    $about->description = $request->description;
+
+    // Handle optional image upload for right image
+    if ($request->hasFile('right_image')) {
+        $about->right_image = $request->file('right_image')->store('aboutus/images', 'public');
     }
+
+    // Process team members
+    $team_members = [];
+    if ($request->has('team_members')) {
+        foreach ($request->team_members as $index => $memberData) {
+            $photoPath = null;
+
+            if (isset($memberData['photo']) && $memberData['photo'] instanceof \Illuminate\Http\UploadedFile) {
+                $photoPath = $memberData['photo']->store('aboutus/team', 'public');
+            } elseif (!empty($memberData['old_photo'])) {
+                $photoPath = $memberData['old_photo'];
+            }
+
+            $team_members[] = [
+                'name' => $memberData['name'] ?? '',
+                'photo' => $photoPath,
+                'description' => $memberData['description'] ?? '',
+                'email' => $memberData['email'] ?? '',
+                'linkedin' => $memberData['linkedin'] ?? '',
+                'website' => $memberData['website'] ?? '',
+            ];
+        }
+    }
+
+    $about->team_members = $team_members;
+
+    $about->save();
+
+    return back()->with('success', 'About Us page updated successfully.');
+}
+
 
 
 public function jsonAboutUs()
@@ -98,8 +94,8 @@ public function jsonAboutUs()
     return response()->json([
         'status' => 'success',
         'data' => [
-            'desktop_video' => $about->desktop_video ? url(Storage::url($about->desktop_video)) : null,
-            'mobile_video' => $about->mobile_video ? url(Storage::url($about->mobile_video)) : null,
+            'desktop_video' => $about->desktop_video ?? null,
+            'mobile_video' => $about->mobile_video ?? null,
             'right_image' => $about->right_image ? url(Storage::url($about->right_image)) : null,
             'description' => $about->description ?? '',
             'team_members' => collect($about->team_members)->map(function ($member) {
